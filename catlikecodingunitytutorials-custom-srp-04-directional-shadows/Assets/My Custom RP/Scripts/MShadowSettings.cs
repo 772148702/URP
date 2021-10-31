@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+using UnityEngine.Serialization;
+
 namespace MRender
 {
     [System.Serializable]
@@ -14,8 +16,8 @@ namespace MRender
             PCF2X2,PCF3X3,PCF5X5,PCF7X7
         }
         
-        [Min(0.001f)]
-        public float minDistance = 100f;
+        [FormerlySerializedAs("minDistance")] [Min(0.001f)]
+        public float maxDistance = 100f;
 
         [Range(0.001f, 1f)] 
         public float distanceFade = 0.1f;

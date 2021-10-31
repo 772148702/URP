@@ -33,8 +33,8 @@ namespace MRender
         {
             if (Handles.ShouldRenderGizmos())
             {
-                _context.DrawGizmos(_camera,GizmoSubset.PreImageEffects);
-                _context.DrawGizmos(_camera,GizmoSubset.PostImageEffects);
+                context.DrawGizmos(camera,GizmoSubset.PreImageEffects);
+                context.DrawGizmos(camera,GizmoSubset.PostImageEffects);
             }
         }
 
@@ -45,7 +45,7 @@ namespace MRender
                 errorMaterial = new Material(Shader.Find("Hidden/InternalErrorShader"));
             }
 
-            var drawingSettings = new DrawingSettings(legacyShaderTagIds[0], new SortingSettings(_camera))
+            var drawingSettings = new DrawingSettings(legacyShaderTagIds[0], new SortingSettings(camera))
             {
                 overrideMaterial = errorMaterial
             };
@@ -55,22 +55,22 @@ namespace MRender
             }
 
             var filteringSettings = FilteringSettings.defaultValue;
-            _context.DrawRenderers(_cullingResults,ref drawingSettings,ref filteringSettings);
+            context.DrawRenderers(_cullingResults,ref drawingSettings,ref filteringSettings);
 
         }
 
         partial void PrepareForSceneWindow()
         {
-            if (_camera.cameraType == CameraType.SceneView)
+            if (camera.cameraType == CameraType.SceneView)
             {
-                ScriptableRenderContext.EmitWorldGeometryForSceneView(_camera);
+                ScriptableRenderContext.EmitWorldGeometryForSceneView(camera);
             }
         }
 
         partial void PrepareBuffer()
         {
             Profiler.BeginSample("Editor Only");
-            _buffer.name = _camera.name;
+            _buffer.name = SampleName = camera.name;
             Profiler.EndSample();
         }
 #else 

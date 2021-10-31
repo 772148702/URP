@@ -1,4 +1,5 @@
-﻿using UnityEditor.PackageManager.UI;
+﻿using System;
+using UnityEditor.PackageManager.UI;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -15,36 +16,46 @@ namespace MRender
             name = bufferName
         };
 
-        private ScriptableRenderContext _context;
+        private ScriptableRenderContext context;
 
-        private Camera _camera;
+        private Camera camera;
 
         private CullingResults _cullingResults;
 
-        public void Render(ScriptableRenderContext context, Camera camera,bool _useDynamicBatching,bool _useGpuInstancing)
+        Lighting _lighting = new Lighting();
+        public void Render(ScriptableRenderContext context, Camera camera,bool useDynamicBatching,bool useGpuInstancing,ShadowSettings shadowSettings)
         {
-            this._context = context;
-            this._camera = camera;
+            this.context = context;
+            this.camera = camera;
             
             PrepareBuffer();
             PrepareForSceneWindow();
-            if (!Cull())
+            if (!Cull(shadowSettings.maxDistance))
             {
                 return;
             }
+            //we can render shadow in this
+            _buffer.BeginSample(SampleName);
+            ExecuteBuffer();
+            _lighting.Setup(context,_cullingResults,shadowSettings);
+            _buffer.EndSample(SampleName);
+            
             Setup();
-            DrawVisibleGeometry(_useDynamicBatching,_useGpuInstancing);
+            DrawVisibleGeometry(useDynamicBatching,useGpuInstancing);
             DrawUnsupportedShaders();
             DrawGizmos();
+            //Do we really need to release temporary RT in every frame
+            _lighting.CleanUp();
             Submit();
         }
 
 
-        bool Cull()
+        bool Cull(float maxShadowDistance)
         {
-            if (_camera.TryGetCullingParameters(out ScriptableCullingParameters scriptableCullingParameters))
+            if (camera.TryGetCullingParameters(out ScriptableCullingParameters scriptableCullingParameters))
             {
-                _cullingResults = _context.Cull(ref scriptableCullingParameters);
+                scriptableCullingParameters.shadowDistance = Mathf.Min(maxShadowDistance, camera.farClipPlane);
+                _cullingResults = context.Cull(ref scriptableCullingParameters);
                 return true;
             }
             return true;
@@ -52,12 +63,12 @@ namespace MRender
 
         void Setup()
         {
-            _context.SetupCameraProperties(_camera);
-            CameraClearFlags flags = _camera.clearFlags;
+            context.SetupCameraProperties(camera);
+            CameraClearFlags flags = camera.clearFlags;
             _buffer.ClearRenderTarget(
                 flags<=CameraClearFlags.Depth,
                 flags==CameraClearFlags.Color,
-                flags==CameraClearFlags.Color? _camera.backgroundColor.linear:Color.clear
+                flags==CameraClearFlags.Color? camera.backgroundColor.linear:Color.clear
                 );
             _buffer.BeginSample(SampleName);
             ExecuteBuffer();
@@ -65,7 +76,7 @@ namespace MRender
 
         void ExecuteBuffer()
         {
-            _context.ExecuteCommandBuffer(_buffer);
+            context.ExecuteCommandBuffer(_buffer);
             _buffer.Clear();
         }
 
@@ -73,13 +84,13 @@ namespace MRender
         {
             _buffer.EndSample(SampleName);
             ExecuteBuffer();
-            _context.Submit();
+            context.Submit();
         }
 
         
         void DrawVisibleGeometry(bool _useDynamicBatching,bool _useGpuInstancing)
         {
-            var sortingSettings = new SortingSettings(_camera)
+            var sortingSettings = new SortingSettings(camera)
             {
                 criteria = SortingCriteria.CommonOpaque
             };
@@ -91,14 +102,14 @@ namespace MRender
             drawingSetting.SetShaderPassName(1,litShaderTagId);
             
             var filterSetting = new FilteringSettings(RenderQueueRange.opaque);
-            _context.DrawRenderers(_cullingResults,ref drawingSetting,ref filterSetting);
+            context.DrawRenderers(_cullingResults,ref drawingSetting,ref filterSetting);
             
-            _context.DrawSkybox(_camera);
+            context.DrawSkybox(camera);
 
             sortingSettings.criteria = SortingCriteria.CommonTransparent;
             drawingSetting.sortingSettings = sortingSettings;
             filterSetting.renderQueueRange = RenderQueueRange.transparent;
-            _context.DrawRenderers(_cullingResults,ref drawingSetting,ref filterSetting);
+            context.DrawRenderers(_cullingResults,ref drawingSetting,ref filterSetting);
         }
         
     }

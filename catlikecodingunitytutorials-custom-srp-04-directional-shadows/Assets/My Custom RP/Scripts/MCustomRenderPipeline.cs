@@ -7,12 +7,14 @@ namespace MRender
     {
         MCameraRender _cameraRenderer = new MCameraRender();
         private bool useDynamicBatching, useGpuInstancing;
-
-        public MCustomRenderPipeline(bool _useDynamicBatching, bool _useGpuInstancing, bool _useSPRBatcher)
+        private ShadowSettings shadowSettings;
+        
+        public MCustomRenderPipeline(bool useDynamicBatching, bool useGpuInstancing, bool useSPRBatcher,ShadowSettings shadowSetting)
         {
-            useDynamicBatching = _useDynamicBatching;
-            useGpuInstancing = _useGpuInstancing;
-            GraphicsSettings.useScriptableRenderPipelineBatching = _useSPRBatcher;
+            this.shadowSettings = shadowSetting;
+            this.useDynamicBatching = useDynamicBatching;
+            this.useGpuInstancing = useGpuInstancing;
+            GraphicsSettings.useScriptableRenderPipelineBatching = useSPRBatcher;
         }
         
         
@@ -20,7 +22,7 @@ namespace MRender
         {
             foreach (var camera in cameras)
             {
-                _cameraRenderer.Render(context,camera,useDynamicBatching,useGpuInstancing);
+                _cameraRenderer.Render(context,camera,useDynamicBatching,useGpuInstancing,shadowSettings);
             }
         }
 

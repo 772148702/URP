@@ -8,10 +8,11 @@ namespace MRender
     public class MCustomRenderPipelineAsset:RenderPipelineAsset
     {
         [SerializeField] private bool useDynamicBatching = true, useGPUInstancing = true, useSRPBatcher = true;
-        
+
+        [SerializeField] private ShadowSettings shadows = default;
         protected override RenderPipeline CreatePipeline() 
         {
-            return new MCustomRenderPipeline(useDynamicBatching,useGPUInstancing,useSRPBatcher);
+            return new MCustomRenderPipeline(useDynamicBatching,useGPUInstancing,useSRPBatcher,shadows);
         }
     }
 }

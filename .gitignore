@@ -2,3 +2,9 @@
 *.idea/
 *Library/
 *Temp/
+*.csproj
+*.sln
+*.csproj
+*/obj/
+*/Logs/
+*/Debug/
