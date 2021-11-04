@@ -26,10 +26,11 @@ Material:
     m_Floats:
     - _Clipping: 1
     - _Cull: 2
-    - _Cutoff: 0.271
+    - _Cutoff: 0.075
     - _DstBlend: 0
     - _SrcBlend: 1
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
+  m_BuildTextureStacks: []

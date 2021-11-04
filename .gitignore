@@ -1,4 +1,10 @@
 *Packages/
 *.idea/
-*Library/
+Library/
 *Temp/
+*.csproj
+*.sln
+*.csproj
+*/obj/
+*/Logs/
+*/Debug/
