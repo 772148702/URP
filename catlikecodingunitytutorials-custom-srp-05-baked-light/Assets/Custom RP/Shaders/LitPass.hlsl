@@ -7,8 +7,9 @@
 #include "../ShaderLibrary/BRDF.hlsl"
 #include "../ShaderLibrary/GI.hlsl"
 #include "../ShaderLibrary/Lighting.hlsl"
-
-struct Attributes {
+#include "./LitInput.hlsl"
+struct Attributes
+{
 	float3 positionOS : POSITION;
 	float3 normalOS : NORMAL;
 	float2 baseUV : TEXCOORD0;
@@ -16,7 +17,8 @@ struct Attributes {
 	UNITY_VERTEX_INPUT_INSTANCE_ID
 };
 
-struct Varyings {
+struct Varyings
+{
 	float4 positionCS : SV_POSITION;
 	float3 positionWS : VAR_POSITION;
 	float3 normalWS : VAR_NORMAL;
@@ -33,7 +35,7 @@ Varyings LitPassVertex (Attributes input) {
 	output.positionWS = TransformObjectToWorld(input.positionOS);
 	output.positionCS = TransformWorldToHClip(output.positionWS);
 	output.normalWS = TransformObjectToWorldNormal(input.normalOS);
-	output.baseUV = TransformBaseUV(input.baseUV);
+	output.baseUV = TransformBaseUV( input.baseUV );
 	return output;
 }
 

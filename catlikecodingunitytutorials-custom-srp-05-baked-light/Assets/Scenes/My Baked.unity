@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_LightingSettings: {fileID: 4890085278179872738, guid: 64656bf6955f4e3458b13f48e523c671,
+  m_LightingSettings: {fileID: 4890085278179872738, guid: 504baeb9f82662d41be0e6d3fbb31e12,
     type: 2}
 --- !u!196 &4
 NavMeshSettings:
@@ -946,7 +946,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 163520180}
   m_LocalRotation: {x: 0.54802346, y: -0.025942719, z: 0.22347179, w: 0.8056411}
-  m_LocalPosition: {x: -3.69, y: 0.5, z: -5.42}
+  m_LocalPosition: {x: -3.73, y: 0.5, z: -5.42}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1070353481}
@@ -1508,7 +1508,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 331147505}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2f4e5bddc090f46f8acfc6475bf68617, type: 3}
   m_Name: 
@@ -1537,14 +1537,14 @@ LightProbeProxyVolume:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 331147505}
-  m_Enabled: 1
+  m_Enabled: 0
   m_BoundingBoxMode: 2
   m_ResolutionX: 2
   m_ResolutionY: 2
   m_ResolutionZ: 2
   m_ResolutionProbesPerUnit: 0.5
-  m_BoundingBoxSize: {x: 20, y: 20, z: 20}
-  m_BoundingBoxOrigin: {x: 0, y: 0, z: 0}
+  m_BoundingBoxSize: {x: 20, y: 18.244503, z: 20}
+  m_BoundingBoxOrigin: {x: 0.008699417, y: -0.877748, z: 0}
   m_ResolutionMode: 0
   m_ProbePositionMode: 1
   m_RefreshMode: 0
